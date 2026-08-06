@@ -1,0 +1,1062 @@
+# Diabetes Risk Prediction Using BRFSS 2015
+
+## Project Overview
+
+Diabetes is one of the most common chronic illnesses in the United States and has a major impact on public health and the economy. Early identification of individuals who are at risk of diabetes or prediabetes can support timely intervention and help reduce long-term health complications.
+
+This project applies machine learning and explainable artificial intelligence methods to predict diabetes status using health indicators from the **2015 Behavioral Risk Factor Surveillance System (BRFSS)** dataset.
+
+The project compares binary and multiclass diabetes prediction to examine:
+
+- Model performance
+- Prediction complexity
+- Class imbalance
+- Feature importance
+- The difficulty of identifying prediabetes
+- The possibility of developing a compact diabetes-risk screening model
+
+The project includes:
+
+- Exploratory data analysis
+- Binary diabetes classification
+- Three-class diabetes classification
+- Data preprocessing
+- Baseline machine learning models
+- Class-weighted models
+- SMOTE-based imbalance handling
+- Logistic Regression
+- Random Forest
+- XGBoost
+- Hyperparameter tuning
+- SHAP explainability analysis
+- Permutation importance
+- Multiple feature-selection methods
+- Reduced-feature modeling
+- Comparison of full-feature and reduced-feature models
+
+---
+
+## Problem Statement
+
+Although diabetes screening methods are available, many individuals with prediabetes or undiagnosed diabetes are unaware that they have the condition.
+
+Machine learning models may support diabetes-risk prediction using demographic, behavioral, lifestyle, and health-related indicators. However, relatively few studies directly compare binary and multiclass diabetes prediction using BRFSS health indicators.
+
+Explainability is also important because public-health professionals need clear and practical information about the factors influencing model predictions.
+
+This project therefore investigates both predictive performance and feature-level explanations for diabetes and prediabetes classification.
+
+---
+
+## Research Questions
+
+1. How accurately can machine learning models using BRFSS 2015 health indicators predict no diabetes, prediabetes, and diabetes?
+
+2. Based on SHAP explainability analysis, which behavioral, demographic, lifestyle, and health factors are the strongest indicators of diabetes and prediabetes?
+
+3. How does model performance change when diabetes prediction is formulated as a three-class problem instead of a binary problem, and what does this indicate about the difficulty of distinguishing prediabetes from diabetes?
+
+4. Can a compact and accurate diabetes-risk screening model be developed using a reduced set of BRFSS health indicators identified through feature-selection methods?
+
+---
+
+## Dataset Description
+
+This project uses two datasets derived from the **2015 Behavioral Risk Factor Surveillance System**, an annual health-related telephone survey conducted by the Centers for Disease Control and Prevention.
+
+The original BRFSS survey contains demographic, behavioral, lifestyle, and health-related information from more than 400,000 participants.
+
+The two prepared datasets used in this project each contain:
+
+- **253,680 survey responses**
+- **21 predictive health indicators**
+- One diabetes-status target variable
+
+### 1. Multiclass Dataset
+
+**File name:**
+
+```text
+diabetes_012_health_indicators_BRFSS2015.csv
+```
+
+The target variable is:
+
+```text
+Diabetes_012
+```
+
+It contains three classes:
+
+| Class | Description |
+|---|---|
+| `0` | No diabetes or diabetes only during pregnancy |
+| `1` | Prediabetes |
+| `2` | Diabetes |
+
+The multiclass dataset is highly imbalanced, particularly because the prediabetes class contains substantially fewer observations than the other classes.
+
+### 2. Binary Dataset
+
+**File name:**
+
+```text
+diabetes_binary_health_indicators_BRFSS2015.csv
+```
+
+The target variable is:
+
+```text
+Diabetes_binary
+```
+
+It contains two classes:
+
+| Class | Description |
+|---|---|
+| `0` | No diabetes |
+| `1` | Prediabetes or diabetes |
+
+The binary dataset is also imbalanced and is used to compare binary prediction performance with the three-class formulation.
+
+Both datasets support:
+
+- Data preprocessing
+- Exploratory data analysis
+- Class-imbalance analysis
+- Machine-learning model training
+- Feature selection
+- Hyperparameter tuning
+- Explainability analysis
+- Binary versus multiclass comparison
+
+---
+
+## Dataset Source
+
+The datasets are available from Kaggle:
+
+[Diabetes Health Indicators Dataset](https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset/data)
+
+---
+
+## Repository Structure
+
+```text
+project-root/
+│
+├── data/
+│   └── diabetes-health-indicators-dataset.zip
+│
+├── eda/
+│   ├── mrp_eda.ipynb
+│   └── EDA-generated images and plots
+│
+├── notebooks/
+│   └── model_test_1.ipynb
+│
+├── src/
+│   ├── __init__.py
+│   ├── preprocessing.py
+│   ├── baseline_models.py
+│   ├── baseline_evaluation.py
+│   ├── baseline_evaluation_balanced.py
+│   ├── random_forest_baseline.py
+│   ├── random_forest_balanced.py
+│   ├── xgboost_baseline.py
+│   ├── xgboost_balanced.py
+│   ├── smote_preprocessing.py
+│   ├── feature_selection.py
+│   ├── reduced_models.py
+│   ├── hyperparameter_tuning.py
+│   └── shap_analysis.py
+│
+├── model_test_1.py
+└── README.md
+```
+
+---
+
+## Folder and File Details
+
+### `data/`
+
+The `data` folder contains the dataset as a ZIP file because the extracted CSV files are too large to store directly in the repository.
+
+Before running the notebooks, the ZIP file must be extracted so that the following files are available:
+
+```text
+data/
+├── diabetes_012_health_indicators_BRFSS2015.csv
+└── diabetes_binary_health_indicators_BRFSS2015.csv
+```
+
+### `eda/`
+
+The `eda` folder contains:
+
+- The exploratory data analysis notebook
+- Target-distribution plots
+- Feature-distribution plots
+- Class-comparison plots
+- Correlation heatmap
+- Preliminary feature-importance plot
+- Other images produced by the EDA notebook
+
+### `notebooks/`
+
+The `notebooks` folder contains:
+
+```text
+model_test_1.ipynb
+```
+
+This is the main notebook used to run the complete machine-learning, explainability, feature-selection, and hyperparameter-tuning workflow.
+
+### `src/`
+
+The `src` folder contains reusable Python scripts imported by the main notebook.
+
+| Script | Purpose |
+|---|---|
+| `preprocessing.py` | Loads, splits, and prepares the binary and multiclass datasets |
+| `baseline_models.py` | Builds and trains baseline Logistic Regression models |
+| `baseline_evaluation.py` | Evaluates binary and multiclass models |
+| `baseline_evaluation_balanced.py` | Supports class-weighted Logistic Regression |
+| `random_forest_baseline.py` | Builds and trains baseline Random Forest models |
+| `random_forest_balanced.py` | Builds and trains class-weighted Random Forest models |
+| `xgboost_baseline.py` | Builds and trains baseline XGBoost models |
+| `xgboost_balanced.py` | Supports imbalance-aware binary and multiclass XGBoost models |
+| `smote_preprocessing.py` | Applies SMOTE to training data |
+| `feature_selection.py` | Performs SHAP, LASSO, RFE, and Mutual Information feature selection |
+| `reduced_models.py` | Builds and trains reduced-feature models |
+| `hyperparameter_tuning.py` | Performs randomized hyperparameter search |
+| `shap_analysis.py` | Performs SHAP and permutation-importance analysis |
+| `__init__.py` | Allows Python to recognize `src` as a package |
+
+### `model_test_1.py`
+
+This is the Python script version of the main modeling notebook.
+
+### `README.md`
+
+This file provides the project overview, dataset information, repository structure, methodology summary, and instructions for running the project.
+
+---
+
+## Exploratory Data Analysis
+
+The EDA notebook examines the structure and characteristics of both the binary and multiclass BRFSS datasets before model training.
+
+### EDA Objectives
+
+The exploratory data analysis is designed to:
+
+- Understand the size and structure of both datasets
+- Inspect the available health indicators
+- Check data quality
+- Examine target-class imbalance
+- Compare feature distributions across diabetes classes
+- Investigate relationships between selected health indicators and diabetes status
+- Examine feature correlations
+- Estimate preliminary feature importance
+
+### Dataset Overview
+
+The EDA notebook displays:
+
+- The first rows of both datasets
+- Dataset dimensions
+- Column names
+- Data types
+- Summary statistics
+- Dataset information using `DataFrame.info()`
+
+### Missing Values and Duplicate Records
+
+The notebook checks:
+
+- Missing values in each column
+- Duplicate rows in the multiclass dataset
+- Duplicate rows in the binary dataset
+
+These checks help identify whether cleaning is required before model development.
+
+### Target Variable Distribution
+
+The notebook calculates both the count and percentage of each target class.
+
+For the multiclass dataset, the following classes are examined:
+
+- No diabetes
+- Prediabetes
+- Diabetes
+
+For the binary dataset, the following classes are examined:
+
+- No diabetes
+- Prediabetes or diabetes
+
+Count plots are generated for both datasets to visually demonstrate class imbalance.
+
+Generated plots include:
+
+```text
+Multiclass_Target_Distribution.png
+Binaryclass_Target_Distribution.png
+```
+
+### Feature Distribution Analysis
+
+The EDA investigates selected numerical, ordinal, and binary health indicators.
+
+Numerical and ordinal features include:
+
+- `BMI`
+- `Age`
+- `GenHlth`
+- `MentHlth`
+- `PhysHlth`
+
+Their distributions are compared across the three diabetes classes using histograms.
+
+Binary health indicators include:
+
+- `HighBP`
+- `HighChol`
+- `Smoker`
+- `PhysActivity`
+- `Fruits`
+- `Veggies`
+- `DiffWalk`
+
+Count plots are used to compare these indicators across the diabetes classes.
+
+Generated images use names such as:
+
+```text
+Feature_Distribution_BMI.png
+Feature_Distribution_Age.png
+Feature_Distribution_GenHlth.png
+Feature_Distribution_HighBP.png
+Feature_Distribution_HighChol.png
+```
+
+### Feature Comparison Across Diabetes Classes
+
+The notebook compares selected health indicators across no-diabetes, prediabetes, and diabetes groups.
+
+Boxplots are created for:
+
+- BMI
+- General health
+- Age category
+
+Generated plots include:
+
+```text
+BMI_VS_DIABETES.png
+GEN_HEALTH_VS_DIABETES.png
+AGE_VS_DIABETES.png
+```
+
+Percentage-based bar charts are also created for:
+
+- High blood pressure
+- High cholesterol
+
+Generated plots include:
+
+```text
+HIGHBP.png
+HIGHCHOL.png
+```
+
+These comparisons help investigate why multiclass prediction may be difficult, particularly when the feature distributions of prediabetes and diabetes overlap.
+
+### Correlation Analysis
+
+A correlation matrix is calculated for the multiclass dataset.
+
+The notebook produces:
+
+- A complete correlation heatmap
+- Correlations between each feature and `Diabetes_012`
+- Correlations between each feature and `Diabetes_binary`
+
+Generated heatmap:
+
+```text
+correlation.png
+```
+
+This analysis provides an initial view of the linear relationships between health indicators and diabetes status.
+
+### Class-Imbalance Analysis
+
+The notebook calculates:
+
+- Class counts
+- Class percentages
+- Majority-to-minority imbalance ratios
+
+The imbalance ratio is calculated as:
+
+```text
+Largest class count / Smallest class count
+```
+
+This analysis supports the later use of:
+
+- Class weighting
+- Sample weighting
+- `scale_pos_weight`
+- SMOTE
+
+### Preliminary Random Forest Feature Importance
+
+A preliminary Random Forest classifier is trained on the multiclass dataset.
+
+The preliminary model uses:
+
+- `100` decision trees
+- `random_state=42`
+- `class_weight="balanced"`
+- A stratified 80% training and 20% testing split
+
+The top 10 features are ranked using Random Forest feature importance.
+
+The generated plot is:
+
+```text
+Preliminary Random Forest Feature Importance.png
+```
+
+This preliminary analysis is used only for EDA. The main modeling notebook later performs more detailed explainability and feature-selection analysis using SHAP, permutation importance, LASSO, RFE, and Mutual Information.
+
+---
+
+## Main Modeling Workflow
+
+The main notebook performs the following steps:
+
+1. Mounts Google Drive.
+2. Defines the project and dataset paths.
+3. Loads the binary and multiclass datasets.
+4. Creates stratified training and testing sets.
+5. Trains baseline Logistic Regression models.
+6. Evaluates binary and multiclass Logistic Regression.
+7. Applies class weighting to Logistic Regression.
+8. Trains baseline Random Forest models.
+9. Trains class-weighted Random Forest models.
+10. Trains baseline XGBoost models.
+11. Applies imbalance-aware XGBoost training.
+12. Applies SMOTE only to the training data.
+13. Trains Logistic Regression and XGBoost using SMOTE-resampled data.
+14. Compares baseline, class-weighted, and SMOTE-based approaches.
+15. Performs SHAP analysis on the selected binary XGBoost model.
+16. Calculates permutation importance.
+17. Performs feature selection using four methods.
+18. Creates reduced datasets using selected features.
+19. Trains reduced-feature Logistic Regression and XGBoost models.
+20. Compares full-feature and reduced-feature performance.
+21. Performs randomized hyperparameter tuning.
+22. Compares tuned models with previous models.
+
+---
+
+## Machine-Learning Models
+
+The following models are evaluated:
+
+### Logistic Regression
+
+Logistic Regression is used as an interpretable baseline model.
+
+The experiments include:
+
+- Baseline binary Logistic Regression
+- Baseline multiclass Logistic Regression
+- Class-weighted binary Logistic Regression
+- Class-weighted multiclass Logistic Regression
+- Logistic Regression with SMOTE
+- Reduced-feature Logistic Regression
+- Tuned Logistic Regression
+
+### Random Forest
+
+Random Forest is used to capture nonlinear relationships between the BRFSS health indicators and diabetes status.
+
+The experiments include:
+
+- Baseline binary Random Forest
+- Baseline multiclass Random Forest
+- Class-weighted binary Random Forest
+- Class-weighted multiclass Random Forest
+
+### XGBoost
+
+XGBoost is used as a gradient-boosting model for structured health data.
+
+The experiments include:
+
+- Baseline binary XGBoost
+- Baseline multiclass XGBoost
+- Binary XGBoost with `scale_pos_weight`
+- Multiclass XGBoost with sample weights
+- Binary XGBoost with SMOTE
+- Multiclass XGBoost with SMOTE
+- Reduced-feature XGBoost
+- Tuned binary XGBoost
+- Tuned multiclass XGBoost
+
+---
+
+## Class-Imbalance Handling
+
+Because both datasets are imbalanced, multiple imbalance-handling approaches are evaluated.
+
+### Class Weights
+
+Class-weighted Logistic Regression and Random Forest models assign greater importance to minority-class errors.
+
+### Binary XGBoost Weighting
+
+For binary XGBoost, the positive-class weight is calculated using:
+
+```text
+Number of negative samples / Number of positive samples
+```
+
+This value is passed through:
+
+```python
+scale_pos_weight
+```
+
+### Multiclass XGBoost Weighting
+
+For multiclass XGBoost, sample weights are calculated using class frequencies and passed to the model during training.
+
+### SMOTE
+
+Synthetic Minority Oversampling Technique is applied only to the training datasets.
+
+The test datasets remain unchanged to avoid data leakage and preserve the original class distribution during evaluation.
+
+---
+
+## Model Evaluation
+
+### Binary Classification Metrics
+
+Binary models are evaluated using:
+
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- ROC-AUC
+- Classification report
+- Confusion matrix
+
+### Multiclass Classification Metrics
+
+Multiclass models are evaluated using:
+
+- Accuracy
+- Macro precision
+- Macro recall
+- Macro F1-score
+- Classification report
+- Confusion matrix
+
+Macro-averaged metrics are emphasized because each class contributes equally, regardless of class size.
+
+This is especially important for evaluating the underrepresented prediabetes class.
+
+---
+
+## Explainability Analysis
+
+The project uses SHAP and permutation importance to identify the most influential health indicators.
+
+### SHAP Analysis
+
+SHAP is applied to the selected Balanced Binary XGBoost model.
+
+Because the complete test set is large, a sample of 2,000 test observations is used for SHAP analysis.
+
+The analysis includes:
+
+- Mean absolute SHAP importance
+- SHAP feature-importance table
+- SHAP bar plot
+- SHAP beeswarm plot
+
+The bar plot shows overall feature importance, while the beeswarm plot shows both feature importance and the direction of feature effects.
+
+### Permutation Importance
+
+Permutation importance is used to validate whether the influential SHAP features also affect model performance when their values are shuffled.
+
+It is applied to:
+
+- Balanced Binary XGBoost using binary F1-score
+- Balanced Multiclass Logistic Regression using macro F1-score
+
+---
+
+## Feature Selection
+
+Four feature-selection methods are used:
+
+### 1. SHAP-Based Feature Ranking
+
+Features are ranked using their mean absolute SHAP values.
+
+### 2. LASSO Feature Selection
+
+L1-regularized Logistic Regression is used to rank features based on the absolute size of their coefficients.
+
+### 3. Recursive Feature Elimination
+
+RFE repeatedly removes less important features until the requested number of features remains.
+
+### 4. Mutual Information
+
+Mutual Information measures the dependency between each health indicator and the binary diabetes target.
+
+The top features identified by these methods are compared to determine which indicators appear consistently important.
+
+---
+
+## Reduced-Feature Modeling
+
+The top 10 SHAP-ranked features are used to create a compact feature set.
+
+The reduced feature set is used to train:
+
+- Balanced Logistic Regression for binary classification
+- Balanced Logistic Regression for multiclass classification
+- Balanced XGBoost for binary classification
+- Balanced XGBoost for multiclass classification
+
+The reduced models are compared with corresponding models trained using all 21 health indicators.
+
+This experiment addresses whether a smaller and more practical diabetes-risk screening tool can maintain performance similar to the full-feature models.
+
+---
+
+## Hyperparameter Tuning
+
+Randomized hyperparameter search is applied only to selected final models to reduce computational cost.
+
+The selected models are:
+
+1. Balanced Binary XGBoost
+2. Balanced Multiclass Logistic Regression
+3. Balanced Multiclass XGBoost
+
+The tuning process uses:
+
+- `RandomizedSearchCV`
+- Stratified cross-validation
+- Three cross-validation folds
+- Binary F1-score for binary classification
+- Macro F1-score for multiclass classification
+
+The tuned models are evaluated on the held-out test sets and compared with the corresponding untuned models.
+
+---
+
+# Running the Project in Google Colab
+
+## 1. Download or Clone the Repository
+
+Download the repository as a ZIP file from GitHub or clone it using Git.
+
+Example:
+
+```python
+!git clone YOUR_REPOSITORY_URL
+```
+
+Replace `YOUR_REPOSITORY_URL` with the repository URL.
+
+---
+
+## 2. Upload the Project to Google Drive
+
+Place the complete project folder in Google Drive using the following structure:
+
+```text
+MyDrive/
+└── MRP/
+    └── codes/
+        ├── data/
+        ├── eda/
+        ├── notebooks/
+        ├── src/
+        ├── model_test_1.py
+        └── README.md
+```
+
+The notebooks currently expect the project root to be:
+
+```python
+/content/drive/MyDrive/MRP/codes
+```
+
+When the project is stored in a different location, update the file paths inside the notebooks.
+
+---
+
+## 3. Extract the Dataset ZIP File
+
+The two CSV files must be extracted into the `data` folder before running the notebooks.
+
+After extraction, the folder should contain:
+
+```text
+data/
+├── diabetes_012_health_indicators_BRFSS2015.csv
+└── diabetes_binary_health_indicators_BRFSS2015.csv
+```
+
+The following Colab code can be used to extract the dataset:
+
+```python
+from pathlib import Path
+import zipfile
+
+project_root = Path("/content/drive/MyDrive/MRP/codes")
+
+zip_path = (
+    project_root
+    / "data"
+    / "diabetes-health-indicators-dataset.zip"
+)
+
+extract_path = project_root / "data"
+
+with zipfile.ZipFile(zip_path, "r") as zip_ref:
+    zip_ref.extractall(extract_path)
+
+print("Dataset extracted successfully.")
+```
+
+Change the ZIP filename when the uploaded ZIP file has a different name.
+
+---
+
+## 4. Install the Required Packages
+
+Run the following cell before running the notebooks:
+
+```python
+!pip install -q \
+    pandas \
+    numpy \
+    matplotlib \
+    seaborn \
+    scikit-learn \
+    imbalanced-learn \
+    xgboost \
+    shap
+```
+
+---
+
+## 5. Mount Google Drive
+
+Both notebooks require access to Google Drive.
+
+Run:
+
+```python
+from google.colab import drive
+
+drive.mount("/content/drive")
+```
+
+Follow the authorization instructions shown by Colab.
+
+---
+
+# Running the EDA Notebook in Google Colab
+
+## 1. Open the EDA Notebook
+
+Open the notebook located in:
+
+```text
+eda/mrp_eda.ipynb
+```
+
+The notebook can be opened by:
+
+- Uploading it directly to Google Colab
+- Opening it from Google Drive
+- Opening it from the GitHub repository
+
+## 2. Set the Project Path
+
+For a consistent repository structure, the EDA notebook should load the datasets from the `data` folder.
+
+Use:
+
+```python
+from pathlib import Path
+
+PROJECT_ROOT = Path("/content/drive/MyDrive/MRP/codes")
+
+multiclass_path = (
+    PROJECT_ROOT
+    / "data"
+    / "diabetes_012_health_indicators_BRFSS2015.csv"
+)
+
+binary_path = (
+    PROJECT_ROOT
+    / "data"
+    / "diabetes_binary_health_indicators_BRFSS2015.csv"
+)
+```
+
+Then load the files:
+
+```python
+import pandas as pd
+
+df_multi = pd.read_csv(multiclass_path)
+df_binary = pd.read_csv(binary_path)
+
+print("Datasets loaded successfully.")
+```
+
+## 3. Set the EDA Output Folder
+
+To save all EDA images inside the repository, create an output folder:
+
+```python
+EDA_OUTPUT = PROJECT_ROOT / "eda" / "images"
+EDA_OUTPUT.mkdir(parents=True, exist_ok=True)
+
+print("EDA images will be saved to:", EDA_OUTPUT)
+```
+
+A figure can then be saved using:
+
+```python
+plt.savefig(
+    EDA_OUTPUT / "Multiclass_Target_Distribution.png",
+    bbox_inches="tight"
+)
+```
+
+This is preferable to using a separate hardcoded `EDA` path.
+
+## 4. Run the EDA Notebook
+
+Run all cells in order:
+
+```text
+Runtime → Run all
+```
+
+The EDA notebook will:
+
+1. Load the binary and multiclass datasets.
+2. Display dataset dimensions and columns.
+3. Inspect data types and summary statistics.
+4. Check missing values.
+5. Count duplicate records.
+6. Calculate target-class counts and percentages.
+7. Plot binary and multiclass target distributions.
+8. Compare numerical and ordinal features across classes.
+9. Compare binary health indicators across classes.
+10. Generate BMI, general-health, and age boxplots.
+11. Compare high blood pressure percentages across classes.
+12. Compare high cholesterol percentages across classes.
+13. Generate a correlation heatmap.
+14. Calculate target correlations.
+15. Calculate class-imbalance ratios.
+16. Train a preliminary Random Forest model.
+17. Plot the top 10 preliminary feature importances.
+
+---
+
+# Running the Main Modeling Notebook in Google Colab
+
+## 1. Open the Main Notebook
+
+Open:
+
+```text
+notebooks/model_test_1.ipynb
+```
+
+The notebook may be opened directly from Google Drive, uploaded to Colab, or opened from GitHub.
+
+## 2. Select the Runtime
+
+From the Google Colab menu, select:
+
+```text
+Runtime → Change runtime type → Python 3
+```
+
+A GPU is not required for the machine-learning models in this project. However, a high-memory runtime may be helpful for:
+
+- SMOTE
+- Randomized hyperparameter tuning
+- SHAP analysis
+- Large multiclass model training
+
+## 3. Confirm the Project Root
+
+The main notebook uses:
+
+```python
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = Path("/content/drive/MyDrive/MRP/codes")
+
+sys.path.append(str(PROJECT_ROOT))
+```
+
+Make sure this path matches the location of the project in Google Drive.
+
+## 4. Confirm the Dataset Paths
+
+The notebook expects:
+
+```python
+binary_path = (
+    PROJECT_ROOT
+    / "data"
+    / "diabetes_binary_health_indicators_BRFSS2015.csv"
+)
+
+multi_path = (
+    PROJECT_ROOT
+    / "data"
+    / "diabetes_012_health_indicators_BRFSS2015.csv"
+)
+```
+
+## 5. Confirm the `src` Package
+
+The following file must exist:
+
+```text
+src/__init__.py
+```
+
+The main notebook also creates it using:
+
+```python
+!touch /content/drive/MyDrive/MRP/codes/src/__init__.py
+```
+
+This allows imports such as:
+
+```python
+from src.preprocessing import prepare_modeling_data
+```
+
+## 6. Run the Main Notebook
+
+Run all notebook cells in order:
+
+```text
+Runtime → Run all
+```
+
+The notebook imports the supporting scripts from the `src` folder, trains the models, evaluates performance, performs feature selection, creates reduced models, tunes selected models, and generates explainability results.
+
+Some sections may require more time than others, particularly:
+
+- SMOTE on the multiclass dataset
+- Permutation importance
+- SHAP analysis
+- Randomized hyperparameter tuning
+- Multiclass XGBoost training
+
+---
+
+## Important Notes
+
+- Keep `src/__init__.py` in the repository so that Python recognizes `src` as a package.
+- Do not change the CSV filenames unless the paths in both notebooks are updated.
+- Extract the dataset ZIP before running either notebook.
+- Run notebook cells in order because later sections depend on earlier variables and trained models.
+- Apply SMOTE only to training data to prevent data leakage.
+- Keep the test set unchanged for final model evaluation.
+- Update Google Drive paths when the project is stored in a different folder.
+- The `__pycache__` folder is generated automatically by Python and does not need to be included in GitHub.
+- Notebook checkpoint folders do not need to be uploaded.
+- Large datasets, temporary files, and generated model files should be excluded using `.gitignore`.
+- Saved EDA images can be retained in the `eda` folder to document the analysis.
+- Hyperparameter tuning and SHAP analysis may require a longer runtime than baseline model training.
+
+---
+
+## Recommended `.gitignore`
+
+```gitignore
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Large extracted datasets
+data/*.csv
+
+# Saved models
+*.pkl
+*.joblib
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+```
+
+The dataset ZIP file may remain in the repository when its size is within GitHub's file-size limit. Otherwise, provide the Kaggle source link and download instructions instead.
+
+---
+
+## Project Status
+
+The repository currently contains:
+
+- Dataset ZIP file
+- Complete EDA notebook
+- EDA-generated figures
+- Main modeling notebook
+- Reusable Python source scripts
+- Binary and multiclass experiments
+- Imbalance-handling experiments
+- Explainability analysis
+- Feature-selection experiments
+- Reduced-feature modeling
+- Hyperparameter tuning
+
+---
+
+## Author
+
+**Ishrat Jaben Bushra**
+
+Master of Data Science and Analytics  
+Toronto Metropolitan University
+
