@@ -172,7 +172,6 @@ project-root/
 │   ├── hyperparameter_tuning.py
 │   └── shap_analysis.py
 │
-├── model_test_1.py
 └── README.md
 ```
 
