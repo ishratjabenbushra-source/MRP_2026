@@ -50,13 +50,14 @@ This project therefore investigates both predictive performance and feature-leve
 
 ## Research Questions
 
-1. How accurately can machine learning models using BRFSS 2015 health indicators predict no diabetes, prediabetes, and diabetes?
+1. How accurately can machine learning models using BRFSS 2015 health feature indicators predict diabetes status, no diabetes, prediabetes, and diabetes?
 
-2. Based on SHAP explainability analysis, which behavioral, demographic, lifestyle, and health factors are the strongest indicators of diabetes and prediabetes?
+2. Based on SHAP explainability analysis, which behavioral, demographic, and lifestyle factors are the best indicators of diabetes and prediabetes?
 
-3. How does model performance change when diabetes prediction is formulated as a three-class problem instead of a binary problem, and what does this indicate about the difficulty of distinguishing prediabetes from diabetes?
+3. What does this indicate about the challenge of differentiating between prediabetes and diabetes, and how does model performance alter when predicting diabetes using a 3-class formulation versus a binary formulation?
 
-4. Can a compact and accurate diabetes-risk screening model be developed using a reduced set of BRFSS health indicators identified through feature-selection methods?
+4. Is it possible to create a compact and accurate diabetes risk screening tool that is similar to the full feature set using a reduced set of BRFSS health indicators found through feature selection methods?
+
 
 ---
 
