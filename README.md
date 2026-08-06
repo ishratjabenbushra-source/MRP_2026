@@ -250,7 +250,6 @@ MyDrive/
         ├── eda/
         ├── notebooks/
         ├── src/
-        ├── model_test_1.py
         └── README.md
 ```
 
