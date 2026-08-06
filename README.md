@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Diabetes is one of the most common chronic illnesses in the United States and has a major impact on public health and the economy. Early identification of individuals who are at risk of diabetes or prediabetes can support timely intervention and help reduce long-term health complications.
+Diabetes is one of the most common chronic illnesses and has a major impact on public health and the economy. Early identification of individuals who are at risk of diabetes or prediabetes can support timely intervention and help reduce long-term health complications.
 
 This project applies machine learning and explainable artificial intelligence methods to predict diabetes status using health indicators from the **2015 Behavioral Risk Factor Surveillance System (BRFSS)** dataset.
 
